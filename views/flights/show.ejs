@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+
+<section id="show-page">
+    <div>Airline: </div>
+    <div><%= flightsFromDatabase.airline %></div>
+    <div>Airport: </div>
+    <div><%= flightsFromDatabase.airport %></div>
+    <div>Flight Number: </div>
+    <div><%= flightsFromDatabase.flightNo %></div>
+    <div>Departs on: </div>
+    <div><%= flightsFromDatabase.departs %></div>
+</section>
+
+<section id='add-flight'>
+    <h2>Flight Path</h2>
+    <form id='add-flight-form' 
+    method='POST' 
+    action='/flights/<%= flightsFromDatabase._id %>/destinations'>
+    <label>Destinations: 
+        <select name='destination'>Airport:
+            <option value='ATL'>ATL</option>
+            <option value='DFW'>DFW</option>
+            <option value='DEN'>DEN</option>
+            <option value='LAX'>LAX</option>
+            <option value='SAN'>SAN</option>
+        </select>
+    </label>
+        <label>Departs:
+            <input type='date' name='arrival' value='2022-01-01'/>
+        </label>
+        <input type='submit' value='Enter Destination'/>
+    </form>
+</section> 
+
+<% if (flightsFromDatabase.destination.length) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Destination</th>
+          <th>Date: </th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% flightsFromDatabase.destination.forEach(function(f) { %>
+          <tr>
+            <td><%= f.destination %></td>
+            <td><%= f.arrival %></td>
+            <td>
+                <form method='POST' action='/flights/<%= f._id %>/?_method=DELETE'>
+                    <button type='submit'>X</button>
+                </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <h5>No Flights Yet</h5>
+  <% } %>
